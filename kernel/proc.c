@@ -330,7 +330,8 @@ fork(void)
   np->state = RUNNABLE;
   release(&np->lock);
 
-  np->trace_mask = p->trace_mask;
+  // trace_mask 是Lab2添加的
+  np->trace_mask = p->trace_mask;  // 让子进程继承父的trace_mask
   return pid;
 }
 

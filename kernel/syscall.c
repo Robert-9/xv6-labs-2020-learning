@@ -165,8 +165,12 @@ syscall(void)
   int num;
   struct proc *p = myproc();
 
+  // 获取系统调用号
   num = p->trapframe->a7;
+  // 如果系统调用号小于等于0，或者大于系统调用数量，则报错
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
+    // 调用对应的系统调用函数，并将返回值存储在trapframe的a0寄存器中
+    // 这里的syscalls[num]是一个函数指针，指向对应的系统调用函数
     p->trapframe->a0 = syscalls[num]();
     //int i;
     //for(i = 1; i <= 22; i++){
@@ -175,6 +179,8 @@ syscall(void)
     //    break;
     //  }
     //  if(mask & p->trace_mask){
+    
+    // 如果trace_mask中对应的位被设置，则打印系统调用信息
     if((1 << num) & p->trace_mask){ 
        printf("%d: syscall %s -> %d\n", p->pid, num_syscall[num-1], p->trapframe->a0);
       } 

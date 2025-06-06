@@ -96,12 +96,13 @@ sys_uptime(void)
   return xticks;
 }
 
+// 当前进程的系统调用跟踪掩码
 uint64
 sys_trace(void){
   int n;
   
-  if(argint(0, &n) < 0)
+  if(argint(0, &n) < 0)  // 获取用户传入的数据
 	 return -1;  
-  myproc()->trace_mask = n;
+  myproc()->trace_mask = n;  // 设置调用进程的trace_mask掩码
   return 0; 
 }
