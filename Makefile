@@ -32,6 +32,12 @@ OBJS = \
   $K/plic.o \
   $K/virtio_disk.o
 
+ifeq ($(LAB),pgtbl)
+OBJS += \
+	$K/vmcopyin.o
+endif
+
+
 OBJS_KCSAN = \
   $K/start.o \
   $K/console.o \
