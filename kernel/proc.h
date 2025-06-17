@@ -106,4 +106,5 @@ struct proc {
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
   struct usyscall *usyscall;   // usyscall page for speeding up system calls
+  pagetable_t kernelpgtbl;     // Kernel page table for this proces
 };
