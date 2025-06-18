@@ -49,7 +49,7 @@ test0()
   for(i = 0; i < 1000*500000; i++){
     if((i % 1000000) == 0)
       write(2, ".", 1);
-    if(count > 0)
+    if(count > 0)  // 执行一次periodic()后，count=1，直接break
       break;
   }
   sigalarm(0, 0);
@@ -150,6 +150,12 @@ slow_handler()
     exit(1);
   }
   for (int i = 0; i < 1000*500000; i++) {
+    // 此循环是为了加一个延时，
+    // 使得alarm handler在返回前，内核有机会再次调用它。
+    // 这样就可以测试内核是否允许alarm handler的重入。
+    // 如果允许重入，则会导致count > 1，进而导致test2失败。
+    // 如果不允许重入，则会导致test2成功。
+    // 这里的nop是为了避免编译器优化掉这个循环。
     asm volatile("nop"); // avoid compiler optimizing away loop
   }
   sigalarm(0, 0);

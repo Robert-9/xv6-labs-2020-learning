@@ -139,14 +139,14 @@ void
 backtrace(void)
 {
   // read the current frame pointer
-  uint64 fp = r_fp();
+  uint64 fp = r_fp();  // 当前帧指针 s0
   // the top of the stack frame is located at high address
-  uint64 top = PGROUNDUP(fp);
-  uint64 bottom = PGROUNDDOWN(fp);
+  uint64 top = PGROUNDUP(fp);   // 当前页的顶部地址
+  uint64 bottom = PGROUNDDOWN(fp);  // 当前页的底部地址
   uint64 ret_addr;
   while(fp < top && fp > bottom){
-    ret_addr = *(uint64*)(fp-8);
+    ret_addr = *(uint64*)(fp-8);  // offset -8：返回地址
     printf("%p\n", ret_addr);
-    fp = *(uint64*)(fp-16);
+    fp = *(uint64*)(fp-16);  // offset -16：上一帧指针
   }
 }

@@ -99,6 +99,7 @@ sys_uptime(void)
   return xticks;
 }
 
+// 仅给进程结构体填好参数；真正“跳转”要等到后面的时钟中断来触发。
 uint64
 sys_sigalarm(void)
 {
@@ -122,7 +123,7 @@ uint64
 sys_sigreturn(void)
 {
   struct proc* p = myproc();
-  p->enable_handler = 1;
- *(p->trapframe) = p->alarm_trapframe;
+  p->enable_handler = 1;  // 恢复时钟中断使能
+ *(p->trapframe) = p->alarm_trapframe;  // 恢复trapframe(在trap.c中做过备份)
   return 0;
 }
