@@ -82,13 +82,13 @@ usertrap(void)
       }
       vaddr = PGROUNDDOWN(vaddr);
       char *mem = kalloc();
-      if(mem == 0) {
+      if(mem == 0) {  // failed to allocate physical memory
         p->killed = 1;
         break;
       }
       memset(mem, 0, PGSIZE);
       if(mappages(p->pagetable, vaddr, PGSIZE, (uint64)mem, PTE_W|PTE_X|PTE_R|PTE_U) != 0){
-        kfree(mem);
+        kfree(mem);  // failed to map page
         p->killed = 1;
         break;
       }
